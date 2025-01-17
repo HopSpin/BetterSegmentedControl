@@ -447,8 +447,8 @@ import UIKit
     }
     
     private func frameForElement(atIndex index: Int) -> CGRect {
-        let elementWidth = (width - totalInsetSize) / CGFloat(normalSegmentViewCount)
-        let x = CGFloat(isLayoutDirectionRightToLeft ? lastIndex - index : index) * elementWidth
+        let elementWidth = elementWidthAtIndex(index)
+        let x = elementXAtIndex(index)
         
         return CGRect(x: x + indicatorViewInset,
                       y: indicatorViewInset,
@@ -456,6 +456,18 @@ import UIKit
                       height: height - totalInsetSize)
     }
     
+    private func elementXAtIndex(_ index: Int) -> CGFloat {
+        // LtR, ignoring RtL
+        guard index > 0 else { return 0 }
+        return (0..<index)
+            .map { elementWidthAtIndex($0) }
+            .reduce(0, +)
+    }
+
+    private func elementWidthAtIndex(_ index: Int) -> CGFloat {
+        (width - totalInsetSize) * segments[index].widthPercent
+    }
+
     private func resetIndex() {
         let newIndex = (segments.count > 0 ? 0 : -1)
         setIndex(newIndex, animated: false, shouldSendValueChangedEvent: false)
@@ -467,7 +479,7 @@ import UIKit
     }
     
     private static func generateDefaultSegments() -> [LabelSegment] {
-        [.init(text: "First"), .init(text: "Second"), .init(text: "Third")]
+        [.init(text: "First", widthPercent: 0.5), .init(text: "Second", widthPercent: 0.5)]
     }
     
     // MARK: Action handlers

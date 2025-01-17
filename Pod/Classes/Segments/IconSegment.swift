@@ -26,19 +26,24 @@ open class IconSegment: BetterSegmentedControlSegment {
     public var selectedIconTintColor: UIColor
     public var selectedBackgroundColor: UIColor
     
+    public let widthPercent: CGFloat
+
     // MARK: Lifecycle
     public init(icon: UIImage,
                 iconSize: CGSize,
                 normalBackgroundColor: UIColor? = nil,
                 normalIconTintColor: UIColor,
                 selectedBackgroundColor: UIColor? = nil,
-                selectedIconTintColor: UIColor) {
+                selectedIconTintColor: UIColor,
+                widthPercent: CGFloat
+    ) {
         self.icon = icon.withRenderingMode(.alwaysTemplate)
         self.iconSize = iconSize
         self.normalBackgroundColor = normalBackgroundColor ?? DefaultValues.normalBackgroundColor
         self.normalIconTintColor = normalIconTintColor
         self.selectedBackgroundColor = selectedBackgroundColor ?? DefaultValues.selectedBackgroundColor
         self.selectedIconTintColor = selectedIconTintColor
+        self.widthPercent = widthPercent
     }
     
     // MARK: BetterSegmentedControlSegment
@@ -85,13 +90,15 @@ public extension IconSegment {
                         normalIconTintColor: UIColor,
                         selectedBackgroundColor: UIColor? = nil,
                         selectedIconTintColor: UIColor) -> [BetterSegmentedControlSegment] {
+        let widthPercent = CGFloat(100 / icons.count / 100)
         return icons.map {
             IconSegment(icon: $0,
                         iconSize: iconSize,
                         normalBackgroundColor: normalBackgroundColor,
                         normalIconTintColor: normalIconTintColor,
                         selectedBackgroundColor: selectedBackgroundColor,
-                        selectedIconTintColor: selectedIconTintColor)
+                        selectedIconTintColor: selectedIconTintColor,
+                        widthPercent: widthPercent)
         }
     }
 }

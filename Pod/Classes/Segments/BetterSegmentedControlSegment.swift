@@ -19,6 +19,10 @@ public protocol BetterSegmentedControlSegment {
     
     /// The view to be shown for the active or selected state.
     var selectedView: UIView { get }
+
+    /// The segment width as a percentage of the whole control.
+    /// ie. 0.5 for 50%
+    var widthPercent: CGFloat { get }
 }
 
 #endif

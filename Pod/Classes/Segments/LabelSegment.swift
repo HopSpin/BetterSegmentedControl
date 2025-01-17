@@ -31,6 +31,8 @@ open class LabelSegment: BetterSegmentedControlSegment {
     public let selectedTextColor: UIColor
     public let selectedBackgroundColor: UIColor
     
+    public let widthPercent: CGFloat
+
     private let numberOfLines: Int
     private let accessibilityIdentifier: String?
     
@@ -43,7 +45,9 @@ open class LabelSegment: BetterSegmentedControlSegment {
                 selectedBackgroundColor: UIColor? = nil,
                 selectedFont: UIFont? = nil,
                 selectedTextColor: UIColor? = nil,
-                accessibilityIdentifier: String? = nil) {
+                accessibilityIdentifier: String? = nil,
+                widthPercent: CGFloat
+    ) {
         self.text = text
         self.numberOfLines = numberOfLines
         self.normalBackgroundColor = normalBackgroundColor ?? DefaultValues.normalBackgroundColor
@@ -53,6 +57,7 @@ open class LabelSegment: BetterSegmentedControlSegment {
         self.selectedFont = selectedFont ?? DefaultValues.selectedFont
         self.selectedTextColor = selectedTextColor ?? DefaultValues.selectedTextColor
         self.accessibilityIdentifier = accessibilityIdentifier
+        self.widthPercent = widthPercent
     }
     
     // MARK: BetterSegmentedControlSegment
@@ -101,7 +106,8 @@ public extension LabelSegment {
                         selectedBackgroundColor: UIColor? = nil,
                         selectedFont: UIFont? = nil,
                         selectedTextColor: UIColor? = nil) -> [BetterSegmentedControlSegment] {
-        titles.map {
+        let widthPercent = CGFloat(100 / titles.count / 100)
+        return titles.map {
             LabelSegment(text: $0,
                          numberOfLines: numberOfLines,
                          normalBackgroundColor: normalBackgroundColor,
@@ -109,7 +115,8 @@ public extension LabelSegment {
                          normalTextColor: normalTextColor,
                          selectedBackgroundColor: selectedBackgroundColor,
                          selectedFont: selectedFont,
-                         selectedTextColor: selectedTextColor)
+                         selectedTextColor: selectedTextColor,
+                         widthPercent: widthPercent)
         }
     }
 }
