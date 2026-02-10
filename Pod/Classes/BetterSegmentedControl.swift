@@ -218,6 +218,11 @@ import UIKit
         self.init(frame: .zero, segments: Self.generateDefaultSegments())
     }
     
+    deinit {
+        // Clear accessibility elements to prevent memory leaks
+        accessibilityElements = nil
+    }
+    
     private func completeInit() {
         layer.masksToBounds = true
         
@@ -251,6 +256,15 @@ import UIKit
     }
     
     // MARK: View lifecycle
+    override open func didMoveToWindow() {
+        super.didMoveToWindow()
+        
+        // Clear accessibility elements when removed from view hierarchy
+        if window == nil {
+            accessibilityElements = nil
+        }
+    }
+    
     override open func layoutSubviews() {
         super.layoutSubviews()
         guard normalSegmentViewCount >= 1 else {
@@ -397,6 +411,9 @@ import UIKit
     // MARK: Helpers
     /// Updates the segments and triggers a layout refresh. Resets the index if needed.
     private func applySegments(shouldResetIndex: Bool = true) {
+        // Clear accessibility elements before removing views to prevent memory leaks
+        accessibilityElements = nil
+        
         normalSegmentViews.forEach { $0.removeFromSuperview() }
         normalSegmentViews.removeAll()
         
